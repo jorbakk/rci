@@ -1,6 +1,6 @@
 # Rci — The highly interactive Plan 9 shell #
 
-Standalone port of Rc shell written by Tom Duff with an interactive REPL frontend supporting
+Standalone port of rc shell written by Tom Duff with an interactive REPL frontend supporting
 command line editing, history, and command line completion using suggestions.
 
 ## Build ##

@@ -1,6 +1,7 @@
 include Make.$(shell uname)
 
-TARG=rci
+RC=rc
+RCI=rci
 
 OFILES=\
 	code.$O\
@@ -20,7 +21,6 @@ OFILES=\
 	y.tab.$O\
 	unix.$O\
 	havefork.$O\
-	prompt-$(PROMPT).$O\
 
 HFILES=\
 	rc.h\
@@ -31,10 +31,13 @@ HFILES=\
 
 YFILES=syn.y
 
-all: $(TARG)
+all: $(RC) $(RCI)
 
-$(TARG): $(OFILES)
-	$(CC) $(ARCHS) -o $(TARG) $(OFILES) $(LFLAGS)
+$(RC): $(OFILES) prompt-null.$O
+	$(CC) $(ARCHS) -o $(RC) $(OFILES) prompt-null.$O
+
+$(RCI): $(OFILES) prompt-$(PROMPT).$O
+	$(CC) $(ARCHS) -o $(RCI) $(OFILES) prompt-$(PROMPT).$O $(LFLAGS)
 
 %.$O: %.c $(HFILES)
 	$(CC) $(ARCHS) $(CFLAGS) -c $*.c
@@ -49,7 +52,8 @@ install: all rcmain.unix rc.1
 	mkdir -p $(DESTDIR)/$(PREFIX)/bin
 	mkdir -p $(DESTDIR)/$(PREFIX)/share/rci
 	mkdir -p $(DESTDIR)/$(PREFIX)/share/man/man1
-	install -m 755 $(TARG) $(DESTDIR)/$(PREFIX)/bin
+	install -m 755 $(RC)  $(DESTDIR)/$(PREFIX)/bin
+	install -m 755 $(RCI) $(DESTDIR)/$(PREFIX)/bin
 	install -m 644 rcmain.unix $(DESTDIR)/$(PREFIX)/share/rci/rcmain
 	install -m 644 rc.1 $(DESTDIR)/$(PREFIX)/share/man/man1
 
@@ -57,7 +61,7 @@ install: all rcmain.unix rc.1
 	$(CC) $(ARCHS) -o $@ $< $(LFLAGS)
 
 clean:
-	rm -f $(TARG) *.$O $(CLEANFILES)
+	rm -f $(RCI) *.$O $(CLEANFILES)
 
 sloc:
 	cloc --exclude-list-file=.clocignore --exclude-ext=md .

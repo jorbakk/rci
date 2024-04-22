@@ -1,10 +1,10 @@
 O=o
 YACC=yacc -d
+YFLAGS=-Wno-yacc   ## Bison should print no Yacc incompatibility warnings
 PREFIX=/usr/local
 WARNINGS=-Wall -Wextra -Wno-parentheses -Wno-missing-braces -Wno-missing-field-initializers -Wno-comment -Wno-sign-compare -Wno-unused-parameter -Wno-implicit-fallthrough #-Werror
 ## Default behaviour of resolving definitions of the same variable in the gcc linker
 ## has changed, so uninitialized variables are put into each compilation unit (-fcommon)
 CFLAGS=-g $(WARNINGS) -DPREFIX=\"$(PREFIX)\" -D_XOPEN_SOURCE=500 -fcommon
 LFLAGS=-lrepline -lsqlite3
-YFLAGS=-Wno-yacc   ## Bison should print no Yacc incompatibility warnings
 PROMPT=repline
