@@ -3,6 +3,10 @@ include Make.$(shell uname)
 RC=rc
 RCI=rci
 
+ifeq ($(DEBUG), 1)
+	CFLAGS += -D__DEBUG__
+endif
+
 OFILES=\
 	code.$O\
 	exec.$O\
@@ -61,7 +65,7 @@ install: all rcmain.unix rc.1
 	$(CC) $(ARCHS) -o $@ $< $(LFLAGS)
 
 clean:
-	rm -f $(RCI) *.$O $(CLEANFILES)
+	rm -f $(RC) $(RCI) *.$O $(CLEANFILES)
 
 sloc:
 	cloc --exclude-list-file=.clocignore --exclude-ext=md .

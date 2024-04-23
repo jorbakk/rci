@@ -203,8 +203,11 @@ read_repline(void)
 	long n;
 	if (first){
 		char hist_path[PATH_MAX];
-		// sprintf(hist_path, "%s/.history.db", getenv("HOME"));
+#ifdef __DEBUG__
 		sprintf(hist_path, "history.db");
+#else
+		sprintf(hist_path, "%s/.history.db", getenv("HOME"));
+#endif
 		rpl_set_history(hist_path, 1000);
 		rpl_set_prompt_marker(promptstr, "> ");
 		rpl_enable_twoline_prompt(true);
