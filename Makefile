@@ -1,10 +1,14 @@
-include Make.$(shell uname)
-
 RC=rc
 RCI=rci
 
 ifeq ($(DEBUG), 1)
-	CFLAGS += -D__DEBUG__
+	include Make.Debug
+else
+	include Make.$(shell uname)
+endif
+
+ifdef HISTORY
+	CFLAGS += -DHISTORY=\"$(HISTORY)\"
 endif
 
 OFILES=\

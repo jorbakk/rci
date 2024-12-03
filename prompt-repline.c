@@ -37,7 +37,7 @@
   // rpl_complete_qword_ex( cenv, prefix, &filename_completer, &rpl_char_is_filename_letter, '\\', "'\"");
 // }
 
-
+/*
 static bool
 get_gitstatus_porcv1(FILE *fp, char *branch, int *modcount)
 {
@@ -69,6 +69,7 @@ get_gitstatus_porcv1(FILE *fp, char *branch, int *modcount)
 	}
 	return true;
 }
+*/
 
 
 static bool
@@ -140,7 +141,7 @@ get_gitstatus(void)
 		if (modcount > 0) sprintf(ret, "(%s|%d)", branch, modcount);
 		else sprintf(ret, "(%s|✔)", branch);
 	}
-cleanup:
+// cleanup:
 	pret = pclose(fp);
 	/// Return code of git status is an error, e.g. no git repo in this directory
 	if (pret) {
@@ -203,14 +204,15 @@ read_repline(void)
 	long n;
 	if (first){
 		char hist_path[PATH_MAX];
-#ifdef __DEBUG__
-		sprintf(hist_path, "history.db");
+#ifdef HISTORY
+		sprintf(hist_path, HISTORY);
 #else
 		sprintf(hist_path, "%s/.history.db", getenv("HOME"));
 #endif
 		rpl_set_history(hist_path, 1000);
 		rpl_set_prompt_marker(promptstr, "> ");
 		rpl_enable_twoline_prompt(true);
+		rpl_enable_brace_insertion(false);
 		rpl_set_hint_delay(0);
 		first = 0;
 	}
@@ -220,6 +222,7 @@ read_repline(void)
 	if (s == NULL) {
 		s = rpl_malloc(strlen("exit") + 1);
 		strcpy(s, "exit");
+		rpl_history_close();
 	}
 	n = strlen(s);
 	assert(n < NBUF-1);

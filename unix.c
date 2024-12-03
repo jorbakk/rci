@@ -222,8 +222,19 @@ Waitfor(int pid, int persist)
 	char wstatstr[12];
 
 	for(;;){
+		// pfmt(err, "wait loop for pid: %d\n", pid);
 		errno = 0;
 		wpid = wait(&wstat);
+
+		/// Equivalent to wait(&wstat)
+		// wpid = waitpid(-1, &wstat, 0);
+
+		/// Loops forever, probably caught in wrong interpretation of waitpid() return value
+		// wpid = waitpid(-1, &wstat, WNOHANG);
+		// if (errno == ECHILD) break;
+
+		// pfmt(err, "wait() returned: %d\n", wpid);
+		// if (wpid > 0) break;
 		if(errno==EINTR && persist)
 			continue;
 		if(wpid==-1)
@@ -250,13 +261,20 @@ Waitfor(int pid, int persist)
 			break;
 		}
 		else{
-			for(p = runq->ret;p;p = p->ret)
-				if(p->pid==wpid){
+			for(p = runq->ret;p;p = p->ret) {
+				if(p->pid==wpid) {
 					p->pid=-1;
 					inttoascii(p->status, wstat);
 					break;
 				}
+			}
 		}
+		/// Seems this one was missing, causing hang when waiting for a specific pid
+		/// Adding one more wait in the script and it hangs, so it hangs when there
+		/// are no child processes available
+		/// Exit if waiting for any pid
+		/// ... seems to work randomly
+		if (pid == -1) break;
 	}
 	return 0;
 }
