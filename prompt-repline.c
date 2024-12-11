@@ -209,10 +209,9 @@ read_repline(void)
 #else
 		sprintf(hist_path, "%s/.history.db", getenv("HOME"));
 #endif
-		rpl_set_history(hist_path, 1000);
+		rpl_set_history(hist_path, -1); /// No limit to number of history entries
 		rpl_set_prompt_marker(promptstr, "> ");
 		rpl_enable_twoline_prompt(true);
-		rpl_enable_brace_insertion(false);
 		rpl_set_hint_delay(0);
 		first = 0;
 	}
