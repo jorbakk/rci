@@ -1,5 +1,4 @@
-
-
+#include <limits.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
@@ -12,6 +11,8 @@
 #ifndef NSIG
 #define NSIG 32
 #endif
+
+#define NBUF   _POSIX_ARG_MAX
 
 #ifndef ERRMAX
 #define ERRMAX 128

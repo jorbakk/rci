@@ -230,14 +230,14 @@ errs(char *s)
 {
 	while(*s) errc(*s++);
 }
-#define	NBUF	80
-static char buf[NBUF], *bufp = buf;
+#define	ENBUF	80
+static char buf[ENBUF], *bufp = buf;
 
 static void
 errc(int c)
 {
 	*bufp++=c;
-	if(bufp==&buf[NBUF] || c=='\n'){
+	if(bufp==&buf[ENBUF] || c=='\n'){
 		Write(2, buf, bufp-buf);
 		bufp = buf;
 	}

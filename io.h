@@ -5,7 +5,11 @@
  */
 #define err rc_err
 #define	EOF	(-1)
+#ifdef Plan9
 #define	NBUF	512
+#else
+#include "unix.h"
+#endif
 struct io{
 	int fd;
 	char *bufp, *ebuf, *strp, buf[NBUF];
