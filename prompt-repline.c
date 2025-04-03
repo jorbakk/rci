@@ -207,7 +207,7 @@ read_repline(void)
 #ifdef HISTORY
 		sprintf(hist_path, HISTORY);
 #else
-		sprintf(hist_path, "%s/.history.db", getenv("HOME"));
+		sprintf(hist_path, "%s/.rc.db", getenv("HOME"));
 #endif
 		rpl_set_history(hist_path, -1); /// No limit to number of history entries
 		rpl_set_prompt_marker(promptstr, "> ");
